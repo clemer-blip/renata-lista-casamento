@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#FAF7F2" />
-<title>João &amp; Maria, nossa lista de presentes</title>
+<title>Simone &amp; Tiller, nossa lista de presentes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -353,6 +353,25 @@
     text-decoration: none;
     border-bottom: 1px solid var(--line);
   }
+  .brand-seal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand-seal::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--champagne);
+  }
+  .brand-seal img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    border-radius: 8px;
+    opacity: 0.92;
+  }
   @media (max-width: 600px) {
     .hero { padding: 48px 20px 32px; }
     .hero h1 { font-size: 56px; }
@@ -377,7 +396,7 @@
 
 <header class="hero">
   <span class="monogram">Casamento</span>
-  <h1>João <span class="amp">&amp;</span> Maria</h1>
+  <h1>Simone <span class="amp">&amp;</span> Tiller</h1>
   <p>É uma alegria ter você ao nosso lado nesse começo de história. Escolhemos com carinho cada item da nossa nova casa, e a sua presença é o presente que mais importa.</p>
 </header>
 
@@ -460,33 +479,34 @@
 </footer>
 
 <div class="page-footer">
-  Atendimento Lohainy &nbsp;·&nbsp; <a href="https://wa.me/5562991536357" target="_blank">(62) 99153-6357</a>
-  <div style="margin-top:18px; font-size:10px; letter-spacing:0.16em;">Curadoria Casa Renata</div>
+  <div class="brand-seal">
+    <img src="logo-renata.png" alt="Casa Renata" />
+  </div>
 </div>
 
 <script>
 const products = {
   'cat-lencois': [
-    { id: 'cortex-q-branco', name: 'Córtex Queen Branco', price: 459.90, max: 4 },
-    { id: 'niazitex-bamboo', name: 'Niazitex Bamboo', price: 699.90, max: 2 },
+    { id: 'cortex-q-branco', name: 'Córtex Queen Branco', price: 459.90 },
+    { id: 'niazitex-bamboo', name: 'Niazitex Bamboo', price: 699.90 },
   ],
   'cat-cobre': [
-    { id: 'lavive-florata', name: 'Lavive Florata', price: 829.90, max: 1 },
-    { id: 'genebra-branco', name: 'Genebra Branco', price: 179.90, max: 1 },
-    { id: 'genebra-verde', name: 'Genebra Verde', price: 179.90, max: 1 },
-    { id: 'melbourne-verde', name: 'Melbourne Verde', price: 499.90, max: 1 },
+    { id: 'lavive-florata', name: 'Lavive Florata', price: 829.90 },
+    { id: 'genebra-branco', name: 'Genebra Branco', price: 179.90 },
+    { id: 'genebra-verde', name: 'Genebra Verde', price: 179.90 },
+    { id: 'melbourne-verde', name: 'Melbourne Verde', price: 499.90 },
   ],
   'cat-travesseiros': [
-    { id: 'kit-skincare', name: 'Kit SkinCare', price: 599.80, max: 1 },
-    { id: 'kit-toque-estilo', name: 'Kit Toque de Estilo', price: 99.90, max: 2 },
+    { id: 'kit-skincare', name: 'Kit SkinCare', price: 599.80 },
+    { id: 'kit-toque-estilo', name: 'Kit Toque de Estilo', price: 99.90 },
   ],
   'cat-toalhas': [
-    { id: 'magna-branco', name: 'Kit Magna Branco', price: 309.70, max: 2 },
-    { id: 'magna-bege', name: 'Kit Magna Bege', price: 309.70, max: 1 },
-    { id: 'magna-lilas', name: 'Kit Magna Lilás', price: 309.70, max: 1 },
+    { id: 'magna-branco', name: 'Kit Magna Branco', price: 309.70 },
+    { id: 'magna-bege', name: 'Kit Magna Bege', price: 309.70 },
+    { id: 'magna-lilas', name: 'Kit Magna Lilás', price: 309.70 },
   ],
   'cat-edredom': [
-    { id: 'bulgari-600', name: 'Bulgari 600 Fios', price: 899.90, max: 2 },
+    { id: 'bulgari-600', name: 'Bulgari 600 Fios', price: 899.90 },
   ],
 };
 
@@ -509,12 +529,11 @@ function renderCategory(catId) {
       <div class="item-info">
         <div class="item-name">${p.name}</div>
         <div class="item-price">${fmtBRL(p.price)}</div>
-        ${p.max > 1 ? `<div class="item-meta">${p.max} unidades disponíveis</div>` : ''}
       </div>
       <div class="qty">
         <button type="button" data-action="dec" data-id="${p.id}" ${qty === 0 ? 'disabled' : ''} aria-label="Remover uma unidade">−</button>
         <span class="qty-display">${qty}</span>
-        <button type="button" data-action="inc" data-id="${p.id}" ${qty >= p.max ? 'disabled' : ''} aria-label="Adicionar uma unidade">+</button>
+        <button type="button" data-action="inc" data-id="${p.id}" aria-label="Adicionar uma unidade">+</button>
       </div>
     `;
     container.appendChild(el);
@@ -545,9 +564,8 @@ document.addEventListener('click', e => {
   if (btn) {
     const id = btn.dataset.id;
     const action = btn.dataset.action;
-    const p = Object.values(products).flat().find(x => x.id === id);
     const cur = state.items[id] || 0;
-    if (action === 'inc' && cur < p.max) state.items[id] = cur + 1;
+    if (action === 'inc') state.items[id] = cur + 1;
     if (action === 'dec' && cur > 0) {
       state.items[id] = cur - 1;
       if (state.items[id] === 0) delete state.items[id];
@@ -621,7 +639,7 @@ document.getElementById('send-btn').addEventListener('click', () => {
   lines.push(`Pode me passar o PIX ou link de pagamento, por favor?`);
 
   const msg = encodeURIComponent(lines.join('\n'));
-  const url = `https://wa.me/5562991536357?text=${msg}`;
+  const url = `https://wa.me/5562984023996?text=${msg}`;
   window.open(url, '_blank');
 });
 
