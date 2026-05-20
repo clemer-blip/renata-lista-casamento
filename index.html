@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FAF7F2" />
+<title>João &amp; Maria, nossa lista de presentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #FAF7F2;
+    --paper: #F3EFE7;
+    --sage: #8FA189;
+    --sage-deep: #6B7D66;
+    --champagne: #C9A961;
+    --champagne-deep: #A8893F;
+    --ink: #3A2E26;
+    --ink-soft: #6B5D52;
+    --line: #E5DDD0;
+    --whatsapp: #25D366;
+    --whatsapp-deep: #1DA851;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+    line-height: 1.5;
+    padding-bottom: 140px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    text-align: center;
+    padding: 64px 24px 40px;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--ivory) 100%);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--champagne);
+    margin: 0 auto 16px;
+  }
+  .hero::after { margin: 16px auto 0; }
+  .monogram {
+    display: inline-block;
+    color: var(--champagne-deep);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(48px, 9vw, 88px);
+    line-height: 1.05;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .hero h1 .amp {
+    font-style: italic;
+    color: var(--champagne-deep);
+    font-weight: 400;
+    padding: 0 0.15em;
+  }
+  .hero p {
+    margin-top: 24px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 20px 0;
+  }
+  .intro {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 0 16px;
+  }
+  .intro p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .category {
+    margin-bottom: 40px;
+  }
+  .category-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .category-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--sage-deep);
+    flex-shrink: 0;
+  }
+  .category-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+  }
+  .item.selected {
+    border-color: var(--sage);
+    background: linear-gradient(180deg, #F4F6F1 0%, #FFFFFF 100%);
+    box-shadow: 0 2px 12px rgba(143, 161, 137, 0.12);
+  }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .item-price {
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .item-meta {
+    font-size: 12px;
+    color: var(--champagne-deep);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+  .qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .qty button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    background: white;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--ink);
+    font-family: inherit;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty button:hover:not(:disabled) {
+    border-color: var(--sage);
+    color: var(--sage-deep);
+  }
+  .qty button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .qty-display {
+    min-width: 32px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .voucher-section {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 32px 24px;
+    margin: 48px 0;
+    border: 1px solid var(--line);
+  }
+  .voucher-section .category-head {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 8px;
+    justify-content: center;
+  }
+  .voucher-intro {
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+  .voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .voucher-card {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .voucher-card:hover {
+    border-color: var(--champagne);
+  }
+  .voucher-card.selected {
+    background: var(--champagne);
+    color: white;
+    border-color: var(--champagne-deep);
+  }
+  .voucher-custom {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .voucher-custom label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .voucher-custom input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    background: white;
+    color: var(--ink);
+  }
+  .voucher-custom input:focus {
+    outline: none;
+    border-color: var(--champagne);
+  }
+  .footer-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 24px rgba(58, 46, 38, 0.06);
+    padding: 14px 20px;
+    z-index: 100;
+  }
+  .footer-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .name-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--ivory);
+    color: var(--ink);
+  }
+  .name-input:focus {
+    outline: none;
+    border-color: var(--sage);
+    background: white;
+  }
+  .name-input.error {
+    border-color: #C45050;
+    background: #FDF4F4;
+  }
+  .total-display {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .total-display strong {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .send-btn {
+    background: var(--whatsapp);
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+  .send-btn:hover:not(:disabled) {
+    background: var(--whatsapp-deep);
+  }
+  .send-btn:disabled {
+    background: #C8D5C5;
+    cursor: not-allowed;
+  }
+  .send-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .page-footer {
+    text-align: center;
+    padding: 48px 20px 24px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .page-footer a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 600px) {
+    .hero { padding: 48px 20px 32px; }
+    .hero h1 { font-size: 56px; }
+    .container { padding: 36px 16px 0; }
+    .item { padding: 16px; }
+    .item-name { font-size: 15px; }
+    .category-head h2 { font-size: 24px; }
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .send-btn {
+      justify-content: center;
+      width: 100%;
+    }
+    .voucher-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .voucher-card { font-size: 14px; padding: 14px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="monogram">Casamento</span>
+  <h1>João <span class="amp">&amp;</span> Maria</h1>
+  <p>É uma alegria ter você ao nosso lado nesse começo de história. Escolhemos com carinho cada item da nossa nova casa, e a sua presença é o presente que mais importa.</p>
+</header>
+
+<main class="container">
+
+  <section class="intro">
+    <p>Selecione o que deseja presentear e envie pelo WhatsApp. A vendedora Lohainy cuida do resto com PIX ou link de pagamento.</p>
+  </section>
+
+  <section class="category" id="cat-lencois">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18M3 8v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8"/><path d="M3 8V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2"/><path d="M7 12h10"/></svg>
+      <h2>Jogos de Lençol</h2>
+    </div>
+    <div class="items"></div>
+  </section>
+
+  <section class="category" id="cat-cobre">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M4 12V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M3 18v-3a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3"/><path d="M7 9h2"/><path d="M15 9h2"/></svg>
+      <h2>Jogos de Cobre Leito</h2>
+    </div>
+    <div class="items"></div>
+  </section>
+
+  <section class="category" id="cat-travesseiros">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c0-1.5 1-3 3-3h12c2 0 3 1.5 3 3v6c0 1.5-1 3-3 3H6c-2 0-3-1.5-3-3z"/><path d="M7 9c1 0 2 .5 2 2M17 9c-1 0-2 .5-2 2"/></svg>
+      <h2>Travesseiros</h2>
+    </div>
+    <div class="items"></div>
+  </section>
+
+  <section class="category" id="cat-toalhas">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6"/><path d="M9 7h7M9 11h7M9 15h7"/></svg>
+      <h2>Toalhas</h2>
+    </div>
+    <div class="items"></div>
+  </section>
+
+  <section class="category" id="cat-edredom">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-2 2-3 4-3 6 0 3 3 4 3 7 0 2-1 4-3 5"/><path d="M19 4c-2 2-3 4-3 6 0 3 3 4 3 7 0 2-1 3-2 4"/><path d="M5 4c-2 2-3 4-3 6 0 3 3 4 3 7 0 2-1 3-2 4"/></svg>
+      <h2>Edredom Bamboo Queen</h2>
+    </div>
+    <div class="items"></div>
+  </section>
+
+  <section class="voucher-section" id="cat-voucher">
+    <div class="category-head">
+      <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M22 7H2v5h20z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      <h2>Voucher de Presente</h2>
+    </div>
+    <p class="voucher-intro">Se preferir, escolha um valor para presentear os noivos.</p>
+    <div class="voucher-grid">
+      <button class="voucher-card" data-value="200">R$ 200</button>
+      <button class="voucher-card" data-value="500">R$ 500</button>
+      <button class="voucher-card" data-value="1000">R$ 1.000</button>
+    </div>
+    <div class="voucher-custom">
+      <label for="voucher-other">Outro valor:</label>
+      <input type="number" id="voucher-other" placeholder="R$" min="0" step="10" />
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer-bar">
+  <div class="footer-inner">
+    <div>
+      <input type="text" class="name-input" id="guest-name" placeholder="Seu nome (para a Lohainy te identificar)" />
+      <div class="total-display">Total selecionado: <strong id="total-text">R$ 0,00</strong></div>
+    </div>
+    <button class="send-btn" id="send-btn" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5-.1-.1-.6-1.5-.9-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.3c1.5.8 3.1 1.3 4.8 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+      <span>Enviar pelo WhatsApp</span>
+    </button>
+  </div>
+</footer>
+
+<div class="page-footer">
+  Atendimento Lohainy &nbsp;·&nbsp; <a href="https://wa.me/5562991536357" target="_blank">(62) 99153-6357</a>
+  <div style="margin-top:18px; font-size:10px; letter-spacing:0.16em;">Curadoria Casa Renata</div>
+</div>
+
+<script>
+const products = {
+  'cat-lencois': [
+    { id: 'cortex-q-branco', name: 'Córtex Queen Branco', price: 459.90, max: 4 },
+    { id: 'niazitex-bamboo', name: 'Niazitex Bamboo', price: 699.90, max: 2 },
+  ],
+  'cat-cobre': [
+    { id: 'lavive-florata', name: 'Lavive Florata', price: 829.90, max: 1 },
+    { id: 'genebra-branco', name: 'Genebra Branco', price: 179.90, max: 1 },
+    { id: 'genebra-verde', name: 'Genebra Verde', price: 179.90, max: 1 },
+    { id: 'melbourne-verde', name: 'Melbourne Verde', price: 499.90, max: 1 },
+  ],
+  'cat-travesseiros': [
+    { id: 'kit-skincare', name: 'Kit SkinCare', price: 599.80, max: 1 },
+    { id: 'kit-toque-estilo', name: 'Kit Toque de Estilo', price: 99.90, max: 2 },
+  ],
+  'cat-toalhas': [
+    { id: 'magna-branco', name: 'Kit Magna Branco', price: 309.70, max: 2 },
+    { id: 'magna-bege', name: 'Kit Magna Bege', price: 309.70, max: 1 },
+    { id: 'magna-lilas', name: 'Kit Magna Lilás', price: 309.70, max: 1 },
+  ],
+  'cat-edredom': [
+    { id: 'bulgari-600', name: 'Bulgari 600 Fios', price: 899.90, max: 2 },
+  ],
+};
+
+const state = {
+  items: {},
+  voucher: 0,
+};
+
+const fmtBRL = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+function renderCategory(catId) {
+  const container = document.querySelector(`#${catId} .items`);
+  container.innerHTML = '';
+  products[catId].forEach(p => {
+    const qty = state.items[p.id] || 0;
+    const selected = qty > 0;
+    const el = document.createElement('div');
+    el.className = 'item' + (selected ? ' selected' : '');
+    el.innerHTML = `
+      <div class="item-info">
+        <div class="item-name">${p.name}</div>
+        <div class="item-price">${fmtBRL(p.price)}</div>
+        ${p.max > 1 ? `<div class="item-meta">${p.max} unidades disponíveis</div>` : ''}
+      </div>
+      <div class="qty">
+        <button type="button" data-action="dec" data-id="${p.id}" ${qty === 0 ? 'disabled' : ''} aria-label="Remover uma unidade">−</button>
+        <span class="qty-display">${qty}</span>
+        <button type="button" data-action="inc" data-id="${p.id}" ${qty >= p.max ? 'disabled' : ''} aria-label="Adicionar uma unidade">+</button>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function renderAll() {
+  Object.keys(products).forEach(renderCategory);
+  updateTotal();
+}
+
+function updateTotal() {
+  let total = 0;
+  Object.entries(state.items).forEach(([id, qty]) => {
+    const p = Object.values(products).flat().find(x => x.id === id);
+    if (p) total += p.price * qty;
+  });
+  total += state.voucher;
+  document.getElementById('total-text').textContent = fmtBRL(total);
+  const hasSomething = total > 0;
+  const sendBtn = document.getElementById('send-btn');
+  sendBtn.disabled = !hasSomething;
+  return total;
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]');
+  if (btn) {
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+    const p = Object.values(products).flat().find(x => x.id === id);
+    const cur = state.items[id] || 0;
+    if (action === 'inc' && cur < p.max) state.items[id] = cur + 1;
+    if (action === 'dec' && cur > 0) {
+      state.items[id] = cur - 1;
+      if (state.items[id] === 0) delete state.items[id];
+    }
+    const catId = Object.keys(products).find(c => products[c].some(x => x.id === id));
+    renderCategory(catId);
+    updateTotal();
+  }
+
+  const voucher = e.target.closest('.voucher-card');
+  if (voucher) {
+    const val = parseFloat(voucher.dataset.value);
+    document.querySelectorAll('.voucher-card').forEach(v => v.classList.remove('selected'));
+    if (state.voucher === val) {
+      state.voucher = 0;
+    } else {
+      state.voucher = val;
+      voucher.classList.add('selected');
+      document.getElementById('voucher-other').value = '';
+    }
+    updateTotal();
+  }
+});
+
+document.getElementById('voucher-other').addEventListener('input', e => {
+  const val = parseFloat(e.target.value) || 0;
+  state.voucher = val;
+  document.querySelectorAll('.voucher-card').forEach(v => v.classList.remove('selected'));
+  updateTotal();
+});
+
+document.getElementById('guest-name').addEventListener('input', e => {
+  e.target.classList.remove('error');
+});
+
+document.getElementById('send-btn').addEventListener('click', () => {
+  const nameEl = document.getElementById('guest-name');
+  const name = nameEl.value.trim();
+  if (!name) {
+    nameEl.classList.add('error');
+    nameEl.focus();
+    nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const lines = [];
+  lines.push(`Oi Lohainy! Tudo bem?`);
+  lines.push('');
+  lines.push(`Sou ${name} e vim presentear o casamento do João e da Maria.`);
+  lines.push('');
+  lines.push(`Escolhi os seguintes itens da lista:`);
+
+  let total = 0;
+  Object.entries(state.items).forEach(([id, qty]) => {
+    const p = Object.values(products).flat().find(x => x.id === id);
+    if (p) {
+      const subtotal = p.price * qty;
+      total += subtotal;
+      lines.push(`• ${qty}x ${p.name}, ${fmtBRL(subtotal)}`);
+    }
+  });
+
+  if (state.voucher > 0) {
+    lines.push(`• Voucher presente, ${fmtBRL(state.voucher)}`);
+    total += state.voucher;
+  }
+
+  lines.push('');
+  lines.push(`Total: ${fmtBRL(total)}`);
+  lines.push('');
+  lines.push(`Pode me passar o PIX ou link de pagamento, por favor?`);
+
+  const msg = encodeURIComponent(lines.join('\n'));
+  const url = `https://wa.me/5562991536357?text=${msg}`;
+  window.open(url, '_blank');
+});
+
+renderAll();
+</script>
+
+</body>
+</html>
